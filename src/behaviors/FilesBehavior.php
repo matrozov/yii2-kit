@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\behaviors;
+namespace matrozov\yii2common\behaviors;
 
 use matrozov\yii2common\exceptions\ModelValidationException;
 use matrozov\yii2common\interfaces\FileTargetClassInterface;
