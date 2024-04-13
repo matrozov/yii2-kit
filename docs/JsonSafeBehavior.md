@@ -1,7 +1,7 @@
 # Json safe behavior
 
 ```php
-use matrozov\yii2common\behaviors\JsonSafeBehavior
+use matrozov\yii2common\behaviors\JsonSafeBehavior;
 ```
 
 Поведение реализующее валидацию и преобразование строковых значений внутри массива

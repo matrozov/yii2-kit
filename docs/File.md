@@ -1,14 +1,14 @@
 # File support
 
 ```php
-use matrozov\yii2common\components\Storage
-use matrozov\yii2common\components\LocalStorage
-use matrozov\yii2common\behaviors\FileBehavior
-use matrozov\yii2common\behaviors\FilesBehavior
-use matrozov\yii2common\interfaces\FileTargetClassInterface
-use matrozov\yii2common\traits\FileTargetClassTrait
-use matrozov\yii2common\models\File
-use matrozov\yii2common\migrations\file
+use matrozov\yii2common\components\Storage;
+use matrozov\yii2common\components\LocalStorage;
+use matrozov\yii2common\behaviors\FileBehavior;
+use matrozov\yii2common\behaviors\FilesBehavior;
+use matrozov\yii2common\interfaces\FileTargetClassInterface;
+use matrozov\yii2common\traits\FileTargetClassTrait;
+use matrozov\yii2common\models\File;
+use matrozov\yii2common\migrations\file;
 ```
 
 Набор классов реализующий операции, хранение и связь с моделями с файлами.

@@ -1,7 +1,7 @@
 # Uuid behavior
 
 ```php
-use matrozov\yii2common\behaviors\UuidBehavior
+use matrozov\yii2common\behaviors\UuidBehavior;
 ```
 
 Поведение реализующее автозаполнения поля id (по умолчанию) автогенерацией UUIDv4.

@@ -1,7 +1,7 @@
 # Model validation exception
 
 ```php
-use matrozov\yii2common\exceptions\ModelValidationException
+use matrozov\yii2common\exceptions\ModelValidationException;
 ```
 
 Вид исключения для обработки внутренних ошибок валидации модели.

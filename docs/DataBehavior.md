@@ -1,7 +1,7 @@
 # Data behavior
 
 ```php
-use matrozov\yii2common\behaviors\DataBehavior
+use matrozov\yii2common\behaviors\DataBehavior;
 ```
 
 Реализует поведение хранения вложенных доп.свойств класса внутри json поля.
