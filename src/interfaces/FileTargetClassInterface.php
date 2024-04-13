@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\interfaces;
+namespace matrozov\yii2common\interfaces;
 
 interface FileTargetClassInterface
 {

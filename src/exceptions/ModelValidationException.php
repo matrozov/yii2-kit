@@ -1,6 +1,6 @@
 <?php
 
-namespace app\exceptions;
+namespace matrozov\yii2common\exceptions;
 
 use Exception;
 use yii\base\ErrorException;

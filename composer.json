@@ -1,0 +1,52 @@
+{
+    "name": "matrozov/yii2-common",
+    "description": "Common classes for Yii2",
+    "keywords": [
+        "yii2",
+        "yii2-extensions"
+    ],
+    "homepage": "https://github.com/matrozov/yii2-common",
+    "type": "extension",
+    "license": "MIT",
+    "version": "0.0.1",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Oleg Matrozov",
+            "email": "oleg.matrozov@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/matrozov/yii2-common/issues",
+        "source": "https://github.com/matrozov/yii2-common"
+    },
+    "require": {
+        "thamtech/yii2-uuid": "^1.2",
+        "league/flysystem": "^1.0",
+        "yiisoft/yii2-httpclient": "^2.0"
+    },
+    "require-dev": {
+        "php": ">=8.2.0",
+        "yiisoft/yii2": "~2.0.45"
+    },
+    "autoload": {
+        "psr-4": {
+            "matrozov\\yii2common\\": "src"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        },
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}

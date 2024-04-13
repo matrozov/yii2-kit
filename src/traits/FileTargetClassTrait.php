@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace matrozov\yii2common\traits;
 
-trait FileTargetClassTtait
+trait FileTargetClassTrait
 {
     /**
      * @return string
      */
     public function fileTargetClass(): string
     {
-        return static::class;
+        return self::class;
     }
 }

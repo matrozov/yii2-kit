@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\helpers;
+namespace matrozov\yii2common\helpers;
 
 use Exception;
 use yii\helpers\ArrayHelper;

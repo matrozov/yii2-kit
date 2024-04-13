@@ -2,17 +2,13 @@
 
 declare(strict_types=1);
 
-namespace app\components;
+namespace matrozov\yii2common\components;
 
-use League\Flysystem\DirectoryListing;
+use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemException;
-use Throwable;
 use yii\base\Component;
 
-/**
- * @property array $config
- */
 abstract class Storage extends Component
 {
     /** @var Filesystem */
@@ -21,9 +17,10 @@ abstract class Storage extends Component
     /**
      * @param string $location
      * @param string $content
-     * @param bool $overwrite
+     * @param bool   $overwrite
+     *
      * @return void
-     * @throws FilesystemException
+     * @throws FileExistsException
      */
     public function write(string $location, string $content, bool $overwrite = false): void
     {
@@ -36,8 +33,9 @@ abstract class Storage extends Component
 
     /**
      * @param string $location
+     *
      * @return string
-     * @throws FilesystemException
+     * @throws FileNotFoundException
      */
     public function read(string $location): string
     {
@@ -46,31 +44,31 @@ abstract class Storage extends Component
 
     /**
      * @param string $location
+     *
      * @return bool
-     * @throws FilesystemException
      */
     public function exists(string $location): bool
     {
-        return $this->fs->fileExists($location);
+        return $this->fs->has($location);
     }
 
     /**
      * @param string $location
+     *
+     * @throws FileNotFoundException
      */
     public function delete(string $location): void
     {
-        try {
-            $this->fs->delete($location);
-        } catch (Throwable $e) {}
+        $this->fs->delete($location);
     }
 
     /**
      * @param string $location
      * @param bool|null $deep
-     * @return DirectoryListing
-     * @throws FilesystemException
+     *
+     * @return array
      */
-    public function listContents(string $location, bool $deep = false): DirectoryListing
+    public function listContents(string $location, bool $deep = false): array
     {
         return $this->fs->listContents($location, $deep);
     }

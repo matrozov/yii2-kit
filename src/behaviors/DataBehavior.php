@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\behaviors;
+namespace matrozov\yii2common\behaviors;
 
 use yii\base\Behavior;
 use yii\helpers\ArrayHelper;
@@ -15,6 +15,7 @@ class DataBehavior extends Behavior
 {
     public string $targetAttribute = 'data';
 
+    /** @var string[] */
     public array $attributes = [];
 
     /**

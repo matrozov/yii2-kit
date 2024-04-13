@@ -1,19 +1,21 @@
 <?php
 
-namespace app\models;
+namespace matrozov\yii2common\models;
 
-use app\behaviors\UuidBehavior;
-use app\helpers\Url;
-use app\traits\FindModelTrait;
 use JsonSerializable;
-use League\Flysystem\FilesystemException;
+use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
+use matrozov\yii2common\behaviors\UuidBehavior;
+use matrozov\yii2common\components\Storage;
+use matrozov\yii2common\helpers\Url;
+use matrozov\yii2common\traits\FindModelTrait;
 use thamtech\uuid\validators\UuidValidator;
 use Throwable;
 use Yii;
 use yii\base\ErrorException;
+use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 use yii\httpclient\Client;
 use yii\httpclient\Exception;
 use yii\web\UploadedFile;
@@ -39,9 +41,11 @@ use yii\web\UploadedFile;
  * @property-read string $dataUri
  * @see self::getDataUri()
  */
-class File extends ActiveRecord implements JsonSerializable
+abstract class File extends ActiveRecord implements JsonSerializable
 {
     use FindModelTrait;
+
+    public static string $storageComponentName = 'storage';
 
     private string|null $_content = null;
 
@@ -94,6 +98,15 @@ class File extends ActiveRecord implements JsonSerializable
             'created_at'       => 'Created At',
             'updated_at'       => 'Updated At',
         ];
+    }
+
+    /**
+     * @return Storage
+     * @throws InvalidConfigException
+     */
+    public static function getStorage(): Storage
+    {
+        return Yii::$app->get(static::$storageComponentName);
     }
 
     /**
@@ -229,7 +242,7 @@ class File extends ActiveRecord implements JsonSerializable
 
         foreach ($ids as $id) {
             try {
-                Yii::$app->file->delete($id);
+                static::getStorage()->delete($id);
             } catch (Throwable $e) {
                 Yii::$app->errorHandler->logException($e);
             }
@@ -246,7 +259,7 @@ class File extends ActiveRecord implements JsonSerializable
         parent::afterDelete();
 
         try {
-            Yii::$app->file->delete($this->id);
+            static::getStorage()->delete($this->id);
         } catch (Throwable $e) {
             Yii::$app->errorHandler->logException($e);
         }
@@ -257,14 +270,14 @@ class File extends ActiveRecord implements JsonSerializable
      * @param $changedAttributes
      *
      * @return void
-     * @throws FilesystemException
+     * @throws FileExistsException
      */
     public function afterSave($insert, $changedAttributes): void
     {
         parent::afterSave($insert, $changedAttributes);
 
         if ($this->_content !== null) {
-            Yii::$app->file->write($this->id, $this->_content, true);
+            static::getStorage()->write($this->id, $this->_content, true);
 
             $this->_content = null;
         }
@@ -272,7 +285,7 @@ class File extends ActiveRecord implements JsonSerializable
 
     /**
      * @return string
-     * @throws FilesystemException
+     * @throws FileNotFoundException
      */
     public function getContent(): string
     {
@@ -280,7 +293,7 @@ class File extends ActiveRecord implements JsonSerializable
             return $this->_content;
         }
 
-        return Yii::$app->file->read($this->id);
+        return static::getStorage()->read($this->id);
     }
 
     /**

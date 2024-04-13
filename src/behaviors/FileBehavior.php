@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace app\behaviors;
 
-use app\exceptions\ModelValidationException;
-use app\interfaces\FileTargetClassInterface;
-use app\models\File;
+use matrozov\yii2common\exceptions\ModelValidationException;
+use matrozov\yii2common\interfaces\FileTargetClassInterface;
+use matrozov\yii2common\models\File;
 use Throwable;
 use yii\base\Behavior;
 use yii\base\ErrorException;

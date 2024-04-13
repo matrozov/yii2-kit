@@ -1,15 +1,13 @@
 <?php
 
-namespace app\traits;
+namespace matrozov\yii2common\traits;
 
-use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 
 /**
  * Trait FindModelTrait
- * @package app\traits
  */
 trait FindModelTrait
 {
@@ -20,7 +18,7 @@ trait FindModelTrait
      * @return ActiveRecord|self|null
      * @throws NotFoundHttpException
      */
-    public static function findModel(array $condition, bool $throwException = true)
+    public static function findModel(array $condition, bool $throwException = true): ActiveRecord|self|null
     {
         /** @var ActiveRecord|string $class */
         $class = get_called_class();

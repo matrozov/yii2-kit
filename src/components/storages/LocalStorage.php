@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace app\components\storages;
+namespace matrozov\yii2common\components\storages;
 
-use app\components\Storage;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Local\LocalFilesystemAdapter;
+use matrozov\yii2common\components\Storage;
 use Yii;
 
 class LocalStorage extends Storage
@@ -20,6 +20,6 @@ class LocalStorage extends Storage
     {
         parent::init();
 
-        $this->fs = new Filesystem(new LocalFilesystemAdapter(Yii::getAlias($this->path)));
+        $this->fs = new Filesystem(new Local(Yii::getAlias($this->path)));
     }
 }
