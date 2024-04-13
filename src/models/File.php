@@ -7,6 +7,7 @@ use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use matrozov\yii2common\behaviors\UuidBehavior;
 use matrozov\yii2common\components\Storage;
+use matrozov\yii2common\helpers\FileHelper;
 use matrozov\yii2common\helpers\Url;
 use matrozov\yii2common\traits\FindModelTrait;
 use thamtech\uuid\validators\UuidValidator;
@@ -212,6 +213,30 @@ abstract class File extends ActiveRecord implements JsonSerializable
         $file->mime_type = $mimeType;
         $file->size      = strlen($response->content);
         $file->content   = $response->content;
+
+        return $file;
+    }
+
+    /**
+     * @param string      $name
+     * @param string      $content
+     * @param string|null $mimeType
+     *
+     * @return static
+     * @throws InvalidConfigException
+     */
+    public static function createFromContent(string $name, string $content, string|null $mimeType = null): static
+    {
+        $file = new static();
+
+        if ($mimeType === null) {
+            $mimeType = FileHelper::getMimeTypeByContent($name, $content);
+        }
+
+        $file->name      = $name;
+        $file->mime_type = $mimeType;
+        $file->size      = strlen($content);
+        $file->content   = $content;
 
         return $file;
     }
