@@ -42,7 +42,7 @@ use yii\web\UploadedFile;
  * @property-read string $dataUri
  * @see self::getDataUri()
  */
-abstract class File extends ActiveRecord implements JsonSerializable
+class File extends ActiveRecord implements JsonSerializable
 {
     use FindModelTrait;
 
