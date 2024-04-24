@@ -63,10 +63,12 @@ class TestModel extends Model {
             [
                 'class' => FileBehavior::class,
                 'attribute' => 'singleFile',
+                'fileClass' => 'app\modules\File',
             ],
             [
                 'class' => FilesBehavior::class,
                 'attribute' => 'multipleFiles',
+                'fileClass' => 'app\modules\File',
             ],
         ];           
     }
@@ -95,6 +97,7 @@ abstract class BaseModel extends Model implements FileTargetClassInterface {
             [
                 'class' => FileBehavior::class,    
                 'attribute' => 'file',
+                'fileClass' => 'app\modules\File',
             ],
         ];
     }

@@ -26,6 +26,7 @@ use yii\web\UploadedFile;
  * [
  *     'class' => FilesBehavior::class,
  *     'attribute' => 'images',
+ *     'fileClass' => 'app\models\File',
  * ]
  *
  * При привязке рекомендуется указывать следующий phpdoc для модели:
@@ -51,6 +52,8 @@ use yii\web\UploadedFile;
 class FilesBehavior extends Behavior
 {
     public string $attribute;
+
+    public File|string $fileClass;
 
     /**
      * @var File[]|false
@@ -282,11 +285,11 @@ class FilesBehavior extends Behavior
                 unset($newFiles[$key]);
             } else {
                 if ($value instanceof UploadedFile) {
-                    $newFiles[$key] = File::createFromUploadedFile($value);
+                    $newFiles[$key] = ($this->fileClass)::createFromUploadedFile($value);
                 } elseif ($value instanceof File) {
-                    $newFiles[$key] = File::createFromFile($value, ArrayHelper::getValue($this->getStoredValue(), $key));
+                    $newFiles[$key] = ($this->fileClass)::createFromFile($value, ArrayHelper::getValue($this->getStoredValue(), $key));
                 } elseif (is_string($value)) {
-                    $newFiles[$key] = File::createFromUrl($value);
+                    $newFiles[$key] = ($this->fileClass)::createFromUrl($value);
                 } else {
                     throw new InvalidArgumentException('Invalid value type');
                 }
@@ -352,7 +355,7 @@ class FilesBehavior extends Behavior
             return parent::__call($name, $params);
         }
 
-        $query = File::find();
+        $query = ($this->fileClass)::find();
 
         $query->primaryModel = $this->owner;
         $query->link         = ['target_id' => $this->owner::primaryKey()[0]];
