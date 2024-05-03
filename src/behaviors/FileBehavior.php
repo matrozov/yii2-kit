@@ -44,6 +44,9 @@ use yii\web\UploadedFile;
  *
  * ModelClass::find()
  *     ->with(['image'])
+ *
+ *
+ * @property ActiveRecord $owner
  */
 class FileBehavior extends Behavior
 {
@@ -90,19 +93,16 @@ class FileBehavior extends Behavior
      */
     protected function getStoredValue(): File|null
     {
-        /** @var ActiveRecord $owner */
-        $owner = $this->owner;
-
-        if ($owner->isRelationPopulated($this->attribute)) {
-            return $owner->{$this->attribute};
+        if ($this->owner->isRelationPopulated($this->attribute)) {
+            return $this->owner->{$this->attribute};
         }
 
-        $relation = $owner->getRelation($this->attribute);
+        $relation = $this->owner->getRelation($this->attribute);
 
         /** @var File|null $model */
         $model = $relation->one();
 
-        $owner->populateRelation($this->attribute, $model);
+        $this->owner->populateRelation($this->attribute, $model);
 
         return $model;
     }

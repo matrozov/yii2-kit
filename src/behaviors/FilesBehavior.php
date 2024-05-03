@@ -48,6 +48,9 @@ use yii\web\UploadedFile;
  *
  * ModelClass::find()
  *     ->with(['images'])
+ *
+ *
+ * @property ActiveRecord $owner
  */
 class FilesBehavior extends Behavior
 {
@@ -110,21 +113,18 @@ class FilesBehavior extends Behavior
      */
     protected function getStoredValue(): array
     {
-        /** @var ActiveRecord $owner */
-        $owner = $this->owner;
-
-        if ($owner->isRelationPopulated($this->attribute)) {
-            return $owner->{$this->attribute};
+        if ($this->owner->isRelationPopulated($this->attribute)) {
+            return $this->owner->{$this->attribute};
         }
 
-        $relation = $owner->getRelation($this->attribute);
+        $relation = $this->owner->getRelation($this->attribute);
 
         /** @var File[] $models */
         $models = $relation
             ->indexBy('key')
             ->all();
 
-        $owner->populateRelation($this->attribute, $models);
+        $this->owner->populateRelation($this->attribute, $models);
 
         return $models;
     }
@@ -243,13 +243,14 @@ class FilesBehavior extends Behavior
     }
 
     /**
-     * @param string                                                              $name
+     * @param string $name
      * @param UploadedFile[]|File[]|string[]|null[]|UploadedFile|File|string|null $value
      *
      * @return void
      * @throws ErrorException
      * @throws Exception
      * @throws UnknownPropertyException
+     * @throws \Exception
      */
     public function __set($name, $value): void
     {

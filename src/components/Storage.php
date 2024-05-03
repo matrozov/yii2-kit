@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace matrozov\yii2kit\components;
 
-use League\Flysystem\FileExistsException;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemException;
 use yii\base\Component;
 
 abstract class Storage extends Component
@@ -17,10 +16,10 @@ abstract class Storage extends Component
     /**
      * @param string $location
      * @param string $content
-     * @param bool   $overwrite
+     * @param bool $overwrite
      *
      * @return void
-     * @throws FileExistsException
+     * @throws FilesystemException
      */
     public function write(string $location, string $content, bool $overwrite = false): void
     {
@@ -35,7 +34,7 @@ abstract class Storage extends Component
      * @param string $location
      *
      * @return string
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function read(string $location): string
     {
@@ -46,6 +45,7 @@ abstract class Storage extends Component
      * @param string $location
      *
      * @return bool
+     * @throws FilesystemException
      */
     public function exists(string $location): bool
     {
@@ -54,8 +54,7 @@ abstract class Storage extends Component
 
     /**
      * @param string $location
-     *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function delete(string $location): void
     {
@@ -67,9 +66,10 @@ abstract class Storage extends Component
      * @param bool|null $deep
      *
      * @return array
+     * @throws FilesystemException
      */
     public function listContents(string $location, bool $deep = false): array
     {
-        return $this->fs->listContents($location, $deep);
+        return $this->fs->listContents($location, $deep)->toArray();
     }
 }

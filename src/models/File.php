@@ -3,8 +3,7 @@
 namespace matrozov\yii2kit\models;
 
 use JsonSerializable;
-use League\Flysystem\FileExistsException;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemException;
 use matrozov\yii2kit\behaviors\UuidBehavior;
 use matrozov\yii2kit\components\Storage;
 use matrozov\yii2kit\helpers\FileHelper;
@@ -295,7 +294,8 @@ class File extends ActiveRecord implements JsonSerializable
      * @param $changedAttributes
      *
      * @return void
-     * @throws FileExistsException
+     * @throws FilesystemException
+     * @throws InvalidConfigException
      */
     public function afterSave($insert, $changedAttributes): void
     {
@@ -310,7 +310,8 @@ class File extends ActiveRecord implements JsonSerializable
 
     /**
      * @return string
-     * @throws FileNotFoundException
+     * @throws FilesystemException
+     * @throws InvalidConfigException
      */
     public function getContent(): string
     {
