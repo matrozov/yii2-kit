@@ -1,7 +1,7 @@
 # File helper
 
 ```php
-use matrozov\yii2common\helpers\FileHelper;
+use matrozov\yii2kit\helpers\FileHelper;
 ```
 
 Хелпер реализующий доп.функции работы с файлами

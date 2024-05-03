@@ -1,7 +1,7 @@
 # Data behavior
 
 ```php
-use matrozov\yii2common\behaviors\DataBehavior;
+use matrozov\yii2kit\behaviors\DataBehavior;
 ```
 
 Реализует поведение хранения вложенных доп.свойств класса внутри json поля.
@@ -17,7 +17,7 @@ class TestModel extends Model {
     {
         return [
             [
-                'class' => matrozov\yii2common\behaviors\DataBehavior::class,
+                'class' => matrozov\yii2kit\behaviors\DataBehavior::class,
                 'targetAttribute' => 'data', // По умолчанию
                 'attributes' => [
                     'field1',

@@ -1,6 +1,6 @@
 <?php
 
-namespace matrozov\yii2common\traits;
+namespace matrozov\yii2kit\traits;
 
 use yii\db\ActiveRecord;
 use yii\helpers\VarDumper;

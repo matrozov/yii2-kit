@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace matrozov\yii2common\behaviors;
+namespace matrozov\yii2kit\behaviors;
 
-use matrozov\yii2common\exceptions\ModelValidationException;
-use matrozov\yii2common\interfaces\FileTargetClassInterface;
-use matrozov\yii2common\models\File;
+use matrozov\yii2kit\exceptions\ModelValidationException;
+use matrozov\yii2kit\interfaces\FileTargetClassInterface;
+use matrozov\yii2kit\models\File;
 use Throwable;
 use yii\base\Behavior;
 use yii\base\ErrorException;

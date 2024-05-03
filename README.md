@@ -1,4 +1,4 @@
-# Yii2 common classes
+# Yii2 kit classes & helpers
 
 ## [File model trait](docs/FileModelTrait.md)
 

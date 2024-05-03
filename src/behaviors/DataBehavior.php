@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace matrozov\yii2common\behaviors;
+namespace matrozov\yii2kit\behaviors;
 
 use Exception;
 use yii\base\Behavior;

@@ -1,7 +1,7 @@
 # Url helper
 
 ```php
-use matrozov\yii2common\helpers\Url;
+use matrozov\yii2kit\helpers\Url;
 ```
 
 Хелпер реализующий доп.функции работы с URL

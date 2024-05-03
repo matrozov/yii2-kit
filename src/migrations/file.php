@@ -1,6 +1,6 @@
 <?php
 
-namespace matrozov\yii2common\migrations;
+namespace matrozov\yii2kit\migrations;
 
 use yii\db\Migration;
 

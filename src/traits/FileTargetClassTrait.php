@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace matrozov\yii2common\traits;
+namespace matrozov\yii2kit\traits;
 
 trait FileTargetClassTrait
 {

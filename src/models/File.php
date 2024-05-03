@@ -1,15 +1,15 @@
 <?php
 
-namespace matrozov\yii2common\models;
+namespace matrozov\yii2kit\models;
 
 use JsonSerializable;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
-use matrozov\yii2common\behaviors\UuidBehavior;
-use matrozov\yii2common\components\Storage;
-use matrozov\yii2common\helpers\FileHelper;
-use matrozov\yii2common\helpers\Url;
-use matrozov\yii2common\traits\FindModelTrait;
+use matrozov\yii2kit\behaviors\UuidBehavior;
+use matrozov\yii2kit\components\Storage;
+use matrozov\yii2kit\helpers\FileHelper;
+use matrozov\yii2kit\helpers\Url;
+use matrozov\yii2kit\traits\FindModelTrait;
 use thamtech\uuid\validators\UuidValidator;
 use Throwable;
 use Yii;

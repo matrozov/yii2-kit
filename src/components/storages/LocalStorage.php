@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace matrozov\yii2common\components\storages;
+namespace matrozov\yii2kit\components\storages;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use matrozov\yii2common\components\Storage;
+use matrozov\yii2kit\components\Storage;
 use Yii;
 
 class LocalStorage extends Storage

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace matrozov\yii2common\components;
+namespace matrozov\yii2kit\components;
 
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;

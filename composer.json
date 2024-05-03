@@ -1,11 +1,11 @@
 {
-    "name": "matrozov/yii2-common",
+    "name": "matrozov/yii2-kit",
     "description": "Common classes for Yii2",
     "keywords": [
         "yii2",
         "yii2-extensions"
     ],
-    "homepage": "https://github.com/matrozov/yii2-common",
+    "homepage": "https://github.com/matrozov/yii2-kit",
     "type": "extension",
     "license": "MIT",
     "version": "0.0.1",
@@ -17,8 +17,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/matrozov/yii2-common/issues",
-        "source": "https://github.com/matrozov/yii2-common"
+        "issues": "https://github.com/matrozov/yii2-kit/issues",
+        "source": "https://github.com/matrozov/yii2-kit"
     },
     "require": {
         "thamtech/yii2-uuid": "^1.2",
@@ -31,7 +31,7 @@
     },
     "autoload": {
         "psr-4": {
-            "matrozov\\yii2common\\": "src"
+            "matrozov\\yii2kit\\": "src"
         }
     },
     "config": {

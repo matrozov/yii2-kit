@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace matrozov\yii2common\helpers;
+namespace matrozov\yii2kit\helpers;
 
 use Yii;
 use yii\base\InvalidConfigException;

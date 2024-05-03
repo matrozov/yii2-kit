@@ -1,7 +1,7 @@
 # Json safe behavior
 
 ```php
-use matrozov\yii2common\behaviors\JsonSafeBehavior;
+use matrozov\yii2kit\behaviors\JsonSafeBehavior;
 ```
 
 Поведение реализующее валидацию и преобразование строковых значений внутри массива
@@ -15,7 +15,7 @@ class TestModel extends Model {
     {
         return [
             [
-                'class' => matrozov\yii2common\behaviors\JsonSafeBehavior::class,
+                'class' => matrozov\yii2kit\behaviors\JsonSafeBehavior::class,
             ],
         ];       
     }
