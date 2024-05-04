@@ -54,7 +54,8 @@ class FileBehavior extends Behavior
 
     public File|string $fileClass;
 
-    private File|null|false $newFile = false;
+    private File|null|false $_oldFile = false;
+    private File|null|false $_newFile = false;
 
     /**
      * @return array[]
@@ -93,8 +94,14 @@ class FileBehavior extends Behavior
      */
     protected function getStoredValue(): File|null
     {
+        if ($this->_oldFile !== false) {
+            return $this->_oldFile;
+        }
+
         if ($this->owner->isRelationPopulated($this->attribute)) {
-            return $this->owner->{$this->attribute};
+            $this->_oldFile = $this->owner->{$this->attribute};
+
+            return $this->_oldFile;
         }
 
         $relation = $this->owner->getRelation($this->attribute);
@@ -103,6 +110,8 @@ class FileBehavior extends Behavior
         $model = $relation->one();
 
         $this->owner->populateRelation($this->attribute, $model);
+
+        $this->_oldFile = $model;
 
         return $model;
     }
@@ -148,27 +157,28 @@ class FileBehavior extends Behavior
      */
     protected function save(): void
     {
-        if ($this->newFile === false) {
+        if ($this->_newFile === false) {
             return;
         }
 
         $this->getStoredValue()?->delete();
 
-        if ($this->newFile === null) {
+        if ($this->_newFile === null) {
             return;
         }
 
-        $this->newFile->target_class     = $this->getOwnerClass();
-        $this->newFile->target_id        = $this->owner->getPrimaryKey();
-        $this->newFile->target_attribute = $this->attribute;
+        $this->_newFile->target_class     = $this->getOwnerClass();
+        $this->_newFile->target_id        = $this->owner->getPrimaryKey();
+        $this->_newFile->target_attribute = $this->attribute;
 
-        if (!$this->newFile->save()) {
-            throw new ModelValidationException($this->newFile);
+        if (!$this->_newFile->save()) {
+            throw new ModelValidationException($this->_newFile);
         }
 
-        $this->owner->populateRelation($this->attribute, $this->newFile);
+        $this->owner->populateRelation($this->attribute, $this->_newFile);
 
-        $this->newFile = false;
+        $this->_oldFile = $this->_newFile;
+        $this->_newFile = false;
     }
 
     /**
@@ -233,16 +243,19 @@ class FileBehavior extends Behavior
         }
 
         if ($value === null) {
-            $this->newFile = null;
+            $this->_newFile = null;
         } elseif ($value instanceof UploadedFile) {
-            $this->newFile = ($this->fileClass)::createFromUploadedFile($value);
+            $this->_newFile = ($this->fileClass)::createFromUploadedFile($value);
         } elseif ($value instanceof File) {
-            $this->newFile = ($this->fileClass)::createFromFile($value, $this->getStoredValue());
+            $this->_newFile = ($this->fileClass)::createFromFile($value, $this->getStoredValue());
         } elseif (is_string($value)) {
-            $this->newFile = ($this->fileClass)::createFromUrl($value);
+            $this->_newFile = ($this->fileClass)::createFromUrl($value);
         } else {
             throw new InvalidArgumentException('Invalid value type');
         }
+
+        // Удаляем ранее сохранённые данные в основной модели
+        unset($this->owner->{$this->attribute});
     }
 
     /**
@@ -257,8 +270,8 @@ class FileBehavior extends Behavior
             return parent::__get($name);
         }
 
-        if ($this->newFile !== false) {
-            return $this->newFile;
+        if ($this->_newFile !== false) {
+            return $this->_newFile;
         }
 
         return $this->getStoredValue();

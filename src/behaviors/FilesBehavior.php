@@ -61,7 +61,12 @@ class FilesBehavior extends Behavior
     /**
      * @var File[]|false
      */
-    private array|false $newFiles = false;
+    private array|false $_oldFiles = false;
+
+    /**
+     * @var File[]|false
+     */
+    private array|false $_newFiles = false;
 
     /**
      * @return array[]
@@ -113,8 +118,14 @@ class FilesBehavior extends Behavior
      */
     protected function getStoredValue(): array
     {
+        if ($this->_oldFiles !== false) {
+            return $this->_oldFiles;
+        }
+
         if ($this->owner->isRelationPopulated($this->attribute)) {
-            return $this->owner->{$this->attribute};
+            $this->_oldFiles = $this->owner->{$this->attribute};
+
+            return $this->_oldFiles;
         }
 
         $relation = $this->owner->getRelation($this->attribute);
@@ -125,6 +136,8 @@ class FilesBehavior extends Behavior
             ->all();
 
         $this->owner->populateRelation($this->attribute, $models);
+
+        $this->_oldFiles = $models;
 
         return $models;
     }
@@ -170,19 +183,19 @@ class FilesBehavior extends Behavior
      */
     protected function save(): void
     {
-        if ($this->newFiles === false) {
+        if ($this->_newFiles === false) {
             return;
         }
 
         $files = $this->getStoredValue();
 
         foreach ($files as $key => $file) {
-            if (!array_key_exists($key, $this->newFiles)) {
+            if (!array_key_exists($key, $this->_newFiles)) {
                 $file->delete();
             }
         }
 
-        foreach ($this->newFiles as $newFile) {
+        foreach ($this->_newFiles as $newFile) {
             $newFile->target_class     = $this->getOwnerClass();
             $newFile->target_id        = $this->owner->getPrimaryKey();
             $newFile->target_attribute = $this->attribute;
@@ -192,9 +205,10 @@ class FilesBehavior extends Behavior
             }
         }
 
-        $this->owner->populateRelation($this->attribute, $this->newFiles);
+        $this->owner->populateRelation($this->attribute, $this->_newFiles);
 
-        $this->newFiles = false;
+        $this->_oldFiles = $this->_newFiles;
+        $this->_newFiles = false;
     }
 
     /**
@@ -263,9 +277,9 @@ class FilesBehavior extends Behavior
             // Замена всех файлов
 
             if ($value === null) {
-                $this->newFiles = [];
+                $this->_newFiles = [];
             } elseif (is_array($value)) {
-                $this->newFiles = [];
+                $this->_newFiles = [];
 
                 foreach ($value as $key => $newFile) {
                     $this->__set($this->attribute . '_' . $key, $newFile);
@@ -276,7 +290,7 @@ class FilesBehavior extends Behavior
         } else {
             // Замена конкретного значения
 
-            $newFiles = $this->newFiles;
+            $newFiles = $this->_newFiles;
 
             if ($newFiles === false) {
                 $newFiles = $this->getStoredValue();
@@ -298,8 +312,11 @@ class FilesBehavior extends Behavior
                 $newFiles[$key]->key = $key;
             }
 
-            $this->newFiles = $newFiles;
+            $this->_newFiles = $newFiles;
         }
+
+        // Удаляем ранее сохранённые данные в основной модели
+        unset($this->owner->{$this->attribute});
     }
 
     /**
@@ -316,15 +333,15 @@ class FilesBehavior extends Behavior
         }
 
         if ($key === null) {
-            if ($this->newFiles !== false) {
-                return $this->newFiles;
+            if ($this->_newFiles !== false) {
+                return $this->_newFiles;
             }
 
             return $this->getStoredValue();
         }
 
-        if ($this->newFiles !== false) {
-            return ArrayHelper::getValue($this->newFiles, $key);
+        if ($this->_newFiles !== false) {
+            return ArrayHelper::getValue($this->_newFiles, $key);
         }
 
         return ArrayHelper::getValue($this->getStoredValue(), $key);
