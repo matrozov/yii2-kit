@@ -13,18 +13,20 @@ class ModelValidationException extends ErrorException
     {
         $delimiter = ' | ';
 
+        $result = [];
+
         if (!empty($message)) {
-            $message .= $delimiter;
+            $result[] = $message;
         }
 
-        $message .= 'Error in ' . get_class($model) . $delimiter;
+        $result[] = 'Error in ' . get_class($model);
 
         foreach ($model->getFirstErrors() as $field => $error) {
             $value = $model->$field;
 
-            $message .= "err: $error ($field = " . substr(VarDumper::export($value), 0, 255) . ") $delimiter";
+            $result[] = "err: $error ($field = " . substr(VarDumper::export($value), 0, 255) . ')';
         }
 
-        parent::__construct($message, 0, 1, $filename, $lineno, $previous);
+        parent::__construct(implode($delimiter, $result), 0, 1, $filename, $lineno, $previous);
     }
 }
