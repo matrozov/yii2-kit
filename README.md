@@ -1,6 +1,6 @@
 # Yii2 kit classes & helpers
 
-## [File model trait](docs/FileModelTrait.md)
+## [Find model trait](docs/FindModelTrait.md)
 
 Треит реализующий стандартизированный поиск и исключение в случае отсутствия записи
 

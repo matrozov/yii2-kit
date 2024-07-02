@@ -1,4 +1,4 @@
-# Fine model trait
+# Find model trait
 
 ```php
 use matrozov\yii2kit\traits\FindModelTrait;
