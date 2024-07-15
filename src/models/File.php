@@ -140,25 +140,18 @@ class File extends ActiveRecord implements JsonSerializable
     }
 
     /**
-     * @param File      $fromFile
-     * @param File|null $oldFile
+     * @param self      $fromFile
+     * @param self|null $oldFile
      *
      * @return static
      */
-    public static function createFromFile(File $fromFile, File|null $oldFile): static
+    public static function createFromFile(self $fromFile, self|null $oldFile): static
     {
         if ($oldFile && $oldFile->isSameFile($fromFile)) {
             return $fromFile;
         }
 
-        $file = new static();
-
-        $file->name      = $fromFile->name;
-        $file->mime_type = $fromFile->mime_type;
-        $file->size      = $fromFile->size;
-        $file->content   = $fromFile->content;
-
-        return $file;
+        return clone $fromFile;
     }
 
     /**
