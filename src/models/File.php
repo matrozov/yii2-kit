@@ -123,6 +123,31 @@ class File extends ActiveRecord implements JsonSerializable
     }
 
     /**
+     * @param string $filename
+     *
+     * @return static
+     * @throws ErrorException
+     * @throws InvalidConfigException
+     */
+    public static function createFromFilename(string $filename): static
+    {
+        if (!file_exists($filename)) {
+            throw new ErrorException('File not found');
+        }
+
+        $content = file_get_contents($filename);
+
+        $file = new static();
+
+        $file->name      = 'file.dat';
+        $file->mime_type = FileHelper::getMimeType($filename);;
+        $file->size      = strlen($content);
+        $file->content   = $content;
+
+        return $file;
+    }
+
+    /**
      * @param UploadedFile $uploadedFile
      *
      * @return static

@@ -197,7 +197,7 @@ class FilesBehavior extends Behavior
 
         foreach ($this->_newFiles as $newFile) {
             $newFile->target_class     = $this->getOwnerClass();
-            $newFile->target_id        = $this->owner->getPrimaryKey();
+            $newFile->target_id        = (string)$this->owner->getPrimaryKey();
             $newFile->target_attribute = $this->attribute;
 
             if (!$newFile->save()) {

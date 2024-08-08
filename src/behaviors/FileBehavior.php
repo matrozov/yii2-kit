@@ -168,7 +168,7 @@ class FileBehavior extends Behavior
         }
 
         $this->_newFile->target_class     = $this->getOwnerClass();
-        $this->_newFile->target_id        = $this->owner->getPrimaryKey();
+        $this->_newFile->target_id        = (string)$this->owner->getPrimaryKey();
         $this->_newFile->target_attribute = $this->attribute;
 
         if (!$this->_newFile->save()) {
