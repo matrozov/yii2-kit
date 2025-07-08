@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace matrozov\yii2kit\behaviors;
 
 use matrozov\yii2kit\exceptions\ModelValidationException;
+use matrozov\yii2kit\helpers\FileHelper;
 use matrozov\yii2kit\interfaces\FileTargetClassInterface;
 use matrozov\yii2kit\models\File;
 use Throwable;
@@ -54,8 +55,8 @@ class FileBehavior extends Behavior
 
     public File|string $fileClass;
 
-    private File|null|false $_oldFile = false;
-    private File|null|false $_newFile = false;
+    protected File|null|false $_oldFile = false;
+    protected File|null|false $_newFile = false;
 
     /**
      * @return array[]
@@ -242,17 +243,7 @@ class FileBehavior extends Behavior
             return;
         }
 
-        if ($value === null) {
-            $this->_newFile = null;
-        } elseif ($value instanceof UploadedFile) {
-            $this->_newFile = ($this->fileClass)::createFromUploadedFile($value);
-        } elseif ($value instanceof File) {
-            $this->_newFile = ($this->fileClass)::createFromFile($value, $this->getStoredValue());
-        } elseif (is_string($value)) {
-            $this->_newFile = ($this->fileClass)::createFromUrl($value);
-        } else {
-            throw new InvalidArgumentException('Invalid value type');
-        }
+        $this->_newFile = FileHelper::valueToFile($this->fileClass, $value, $this->getStoredValue());
 
         // Удаляем ранее сохранённые данные в основной модели
         unset($this->owner->{$this->attribute});
@@ -261,10 +252,10 @@ class FileBehavior extends Behavior
     /**
      * @param string $name
      *
-     * @return mixed
+     * @return false|File|null
      * @throws UnknownPropertyException
      */
-    public function __get($name): mixed
+    public function __get($name): false|File|null
     {
         if (!$this->isMyProperty($name)) {
             return parent::__get($name);

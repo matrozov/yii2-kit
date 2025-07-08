@@ -28,6 +28,7 @@
     },
     "require-dev": {
         "php": ">=8.2.0",
+        "ext-imagick": "*",
         "yiisoft/yii2": "~2.0.45"
     },
     "autoload": {

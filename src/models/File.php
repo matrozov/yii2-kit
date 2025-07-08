@@ -4,6 +4,7 @@ namespace matrozov\yii2kit\models;
 
 use JsonSerializable;
 use League\Flysystem\FilesystemException;
+use matrozov\yii2kit\behaviors\DataBehavior;
 use matrozov\yii2kit\behaviors\UuidBehavior;
 use matrozov\yii2kit\components\Storage;
 use matrozov\yii2kit\helpers\FileHelper;
@@ -31,6 +32,7 @@ use yii\web\UploadedFile;
  * @property string      $name
  * @property string      $mime_type
  * @property int         $size
+ * @property array       $data
  * @property int         $created_at
  * @property int         $updated_at
  *
@@ -65,6 +67,9 @@ class File extends ActiveRecord implements JsonSerializable
         return [
             UuidBehavior::class,
             TimestampBehavior::class,
+            'data' => [
+                'class' => DataBehavior::class,
+            ],
         ];
     }
 
@@ -74,10 +79,11 @@ class File extends ActiveRecord implements JsonSerializable
     public function rules(): array
     {
         return [
-            [['id', 'target_class', 'target_id', 'target_attribute', 'name', 'mime_type', 'size'], 'required'],
+            [['id', 'target_class', 'target_id', 'target_attribute', 'name', 'mime_type', 'size', 'data'], 'required'],
             [['id'], UuidValidator::class],
             [['target_class', 'target_id', 'target_attribute', 'key', 'name', 'mime_type'], 'string', 'max' => 255],
             [['size', 'created_at', 'updated_at'], 'integer'],
+            [['data'], 'safe'],
         ];
     }
 
@@ -95,9 +101,20 @@ class File extends ActiveRecord implements JsonSerializable
             'name'             => 'Name',
             'mime_type'        => 'Mime Type',
             'size'             => 'Size',
+            'data'             => 'Data',
             'created_at'       => 'Created At',
             'updated_at'       => 'Updated At',
         ];
+    }
+
+    /**
+     * @return void
+     */
+    public function init(): void
+    {
+        parent::init();
+
+        $this->data = [];
     }
 
     /**

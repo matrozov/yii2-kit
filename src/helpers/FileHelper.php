@@ -4,11 +4,35 @@ declare(strict_types=1);
 
 namespace matrozov\yii2kit\helpers;
 
+use matrozov\yii2kit\models\File;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
+use yii\httpclient\Exception;
+use yii\web\UploadedFile;
 
 class FileHelper extends \yii\helpers\FileHelper
 {
+    /**
+     * @throws Exception
+     * @throws ErrorException
+     */
+    public static function valueToFile(string|File $fileClass, mixed $value, mixed $currentValue): File|null
+    {
+        if ($value === null) {
+            return null;
+        } elseif ($value instanceof UploadedFile) {
+            return $fileClass::createFromUploadedFile($value);
+        } elseif ($value instanceof File) {
+            return $fileClass::createFromFile($value, $currentValue);
+        } elseif (is_string($value)) {
+            return $fileClass::createFromUrl($value);
+        }
+
+        throw new InvalidArgumentException('Invalid value type');
+    }
+
     /**
      * @param string      $file
      * @param string      $content

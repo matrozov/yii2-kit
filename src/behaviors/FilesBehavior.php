@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace matrozov\yii2kit\behaviors;
 
 use matrozov\yii2kit\exceptions\ModelValidationException;
+use matrozov\yii2kit\helpers\FileHelper;
 use matrozov\yii2kit\interfaces\FileTargetClassInterface;
 use matrozov\yii2kit\models\File;
 use Throwable;
@@ -296,19 +297,12 @@ class FilesBehavior extends Behavior
                 $newFiles = $this->getStoredValue();
             }
 
+            $value = FileHelper::valueToFile($this->fileClass, $value, ArrayHelper::getValue($this->getStoredValue(), $key));
+
             if ($value === null) {
                 unset($newFiles[$key]);
             } else {
-                if ($value instanceof UploadedFile) {
-                    $newFiles[$key] = ($this->fileClass)::createFromUploadedFile($value);
-                } elseif ($value instanceof File) {
-                    $newFiles[$key] = ($this->fileClass)::createFromFile($value, ArrayHelper::getValue($this->getStoredValue(), $key));
-                } elseif (is_string($value)) {
-                    $newFiles[$key] = ($this->fileClass)::createFromUrl($value);
-                } else {
-                    throw new InvalidArgumentException('Invalid value type');
-                }
-
+                $newFiles[$key]      = $value;
                 $newFiles[$key]->key = $key;
             }
 

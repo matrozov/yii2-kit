@@ -2,6 +2,7 @@
 
 namespace matrozov\yii2kit\migrations;
 
+use yii\base\Exception;
 use yii\db\Migration;
 
 class file extends Migration
@@ -11,6 +12,7 @@ class file extends Migration
 
     /**
      * {@inheritdoc}
+     * @throws Exception
      */
     public function safeUp(): void
     {
@@ -23,6 +25,7 @@ class file extends Migration
             'name'             => $this->string()->notNull(),
             'mime_type'        => 'varchar(255) CHARACTER SET ascii',
             'size'             => $this->integer()->unsigned()->notNull(),
+            'data'             => $this->json()->notNull(),
             'created_at'       => $this->integer()->unsigned()->notNull(),
             'updated_at'       => $this->integer()->unsigned()->notNull(),
         ], $this->options);
