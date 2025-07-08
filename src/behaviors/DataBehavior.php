@@ -52,7 +52,7 @@ class DataBehavior extends Behavior
      */
     public function canGetProperty($name, $checkVars = true): bool
     {
-        if (($this->prefix === '') || str_starts_with($this->prefix, $name)) {
+        if (str_starts_with($name, $this->prefix)) {
             $fieldName = substr($name, strlen($this->prefix));
 
             if (array_key_exists($fieldName, $this->attributes)) {
@@ -68,7 +68,7 @@ class DataBehavior extends Behavior
      */
     public function canSetProperty($name, $checkVars = true): bool
     {
-        if (($this->prefix === '') || str_starts_with($this->prefix, $name)) {
+        if (str_starts_with($name, $this->prefix)) {
             $fieldName = substr($name, strlen($this->prefix));
 
             if (array_key_exists($fieldName, $this->attributes)) {
@@ -85,7 +85,7 @@ class DataBehavior extends Behavior
      */
     public function __get($name): mixed
     {
-        if (($this->prefix === '') || str_starts_with($this->prefix, $name)) {
+        if (str_starts_with($name, $this->prefix)) {
             $fieldName = substr($name, strlen($this->prefix));
 
             if (array_key_exists($fieldName, $this->attributes)) {
@@ -101,7 +101,7 @@ class DataBehavior extends Behavior
      */
     public function __set($name, $value): void
     {
-        if (($this->prefix === '') || str_starts_with($this->prefix, $name)) {
+        if (str_starts_with($name, $this->prefix)) {
             $fieldName = substr($name, strlen($this->prefix));
 
             if (array_key_exists($fieldName, $this->attributes)) {
