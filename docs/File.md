@@ -56,7 +56,8 @@ FileBehavior и FilesBehavior - поведение реализующее при
  * @method ActiveQuery $getMultipleFiles
  * @see FilesBehavior 
  */
-class TestModel extends Model {
+class TestModel extends Model
+{
     public function behaviors(): array
     {
         return [
@@ -88,7 +89,8 @@ FileTargetClassInterface и FileTargetClassTrait - реализуют возмо
 /**
  * @property File $file
  */
-abstract class BaseModel extends Model implements FileTargetClassInterface {
+abstract class BaseModel extends Model implements FileTargetClassInterface
+{
     use FileTargetClassTrait;
     
     public function behaviors(): array
@@ -103,7 +105,10 @@ abstract class BaseModel extends Model implements FileTargetClassInterface {
     }
 }
 
-class TestModel extends BaseModel {}
+class TestModel extends BaseModel
+{
+
+}
 
 $test = new TestModel();
 $test->file = 'https://example.com/image.jpg';
@@ -119,7 +124,8 @@ $models = BaseModel::find()->with('file')->all();
 ## File
 
 ```php
-class MyFile extends File {
+class MyFile extends File
+{
 
 }
 ```

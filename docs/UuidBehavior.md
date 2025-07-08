@@ -7,7 +7,8 @@ use matrozov\yii2kit\behaviors\UuidBehavior;
 Поведение реализующее автозаполнения поля id (по умолчанию) автогенерацией UUIDv4.
 
 ```php
-class TestModel extends Model {
+class TestModel extends Model
+{
     public string $id = '';
 
     public function behaviors(): array

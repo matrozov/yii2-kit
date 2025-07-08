@@ -10,7 +10,8 @@ use matrozov\yii2kit\behaviors\JsonSafeBehavior;
 Валидация происходит по схеме базы данных при указании, что тип поле является json.
 
 ```php
-class TestModel extends Model {
+class TestModel extends Model
+{
     public function behaviors(): array
     {
         return [

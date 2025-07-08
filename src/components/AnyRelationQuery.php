@@ -10,9 +10,6 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecordInterface;
 use yii\db\Command;
 
-/**
- *
- */
 class AnyRelationQuery extends ActiveQuery
 {
     public mixed $callback;

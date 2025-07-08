@@ -7,7 +7,8 @@ use matrozov\yii2kit\traits\FindModelTrait;
 Треит реализующий стандартизированный поиск и исключение в случае отсутствия записи
 
 ```php
-class TestModel extends Model {
+class TestModel extends Model
+{
     use FindModelTrait;
 }
 
