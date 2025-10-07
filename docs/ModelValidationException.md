@@ -8,7 +8,10 @@ use matrozov\yii2kit\exceptions\ModelValidationException;
 Реализует вывод поля ошибки и его значения.
 
 ```php
-class TestModel extends Model {}
+class TestModel extends Model
+{
+
+}
 
 $test = new TestModel();
 

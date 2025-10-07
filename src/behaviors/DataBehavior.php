@@ -11,6 +11,10 @@ use yii\helpers\ArrayHelper;
 /**
  * Поведение реализует хранение вложенных свойств в data-аттрибуте.
  * Поддерживает возможность указать значение аттрибута по умолчанию, если он не определён в data-аттрибуте.
+ *
+ * @property string      $targetAttribute - Название целевого аттрибута в модели
+ * @property string[]    $attributes      - Список вложенных аттрибутов (указанные поля будут доступны и как поля модели по прямому обращению $model->"<prefix><attribute>")
+ * @property string|null $prefix          - Префикс названия полей в геттере и сеттере
  */
 class DataBehavior extends Behavior
 {
@@ -18,6 +22,9 @@ class DataBehavior extends Behavior
 
     /** @var string[] */
     public array $attributes = [];
+
+    /** @var string|null Getter/Setter field prefix (null - auto from targetAttribute + '_') */
+    public string|null $prefix = null;
 
     public function init(): void
     {
@@ -34,6 +41,10 @@ class DataBehavior extends Behavior
         }
 
         $this->attributes = $attributes;
+
+        if ($this->prefix === null) {
+            $this->prefix = $this->targetAttribute . '_';
+        }
     }
 
     /**
@@ -41,8 +52,12 @@ class DataBehavior extends Behavior
      */
     public function canGetProperty($name, $checkVars = true): bool
     {
-        if (array_key_exists($name, $this->attributes)) {
-            return true;
+        if (str_starts_with($name, $this->prefix)) {
+            $fieldName = substr($name, strlen($this->prefix));
+
+            if (array_key_exists($fieldName, $this->attributes)) {
+                return true;
+            }
         }
 
         return parent::canGetProperty($name, $checkVars);
@@ -53,8 +68,12 @@ class DataBehavior extends Behavior
      */
     public function canSetProperty($name, $checkVars = true): bool
     {
-        if (array_key_exists($name, $this->attributes)) {
-            return true;
+        if (str_starts_with($name, $this->prefix)) {
+            $fieldName = substr($name, strlen($this->prefix));
+
+            if (array_key_exists($fieldName, $this->attributes)) {
+                return true;
+            }
         }
 
         return parent::canSetProperty($name, $checkVars);
@@ -66,8 +85,12 @@ class DataBehavior extends Behavior
      */
     public function __get($name): mixed
     {
-        if (array_key_exists($name, $this->attributes)) {
-            return ArrayHelper::getValue($this->owner[$this->targetAttribute], $name, $this->attributes[$name]);
+        if (str_starts_with($name, $this->prefix)) {
+            $fieldName = substr($name, strlen($this->prefix));
+
+            if (array_key_exists($fieldName, $this->attributes)) {
+                return ArrayHelper::getValue($this->owner[$this->targetAttribute], $fieldName, $this->attributes[$fieldName]);
+            }
         }
 
         return parent::__get($name);
@@ -78,14 +101,20 @@ class DataBehavior extends Behavior
      */
     public function __set($name, $value): void
     {
-        if (array_key_exists($name, $this->attributes)) {
-            $data = $this->owner[$this->targetAttribute];
+        if (str_starts_with($name, $this->prefix)) {
+            $fieldName = substr($name, strlen($this->prefix));
 
-            $data[$name] = $value;
+            if (array_key_exists($fieldName, $this->attributes)) {
+                $data = $this->owner[$this->targetAttribute];
 
-            $this->owner[$this->targetAttribute] = $data;
-        } else {
-            parent::__set($name, $value);
+                $data[$fieldName] = $value;
+
+                $this->owner[$this->targetAttribute] = $data;
+
+                return;
+            }
         }
+
+        parent::__set($name, $value);
     }
 }
