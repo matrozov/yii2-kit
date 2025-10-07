@@ -226,7 +226,7 @@ class File extends ActiveRecord implements JsonSerializable
 
         $file = new static();
 
-        $file->name      = basename($url);
+        $file->name      = rawurldecode(basename($url));
         $file->mime_type = $mimeType;
         $file->size      = strlen($response->content);
         $file->content   = $response->content;
